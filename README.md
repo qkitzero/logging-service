@@ -1,1 +1,1 @@
-# logging-service
+# Logging Service
