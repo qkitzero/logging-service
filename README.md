@@ -1,1 +1,6 @@
-# logging-service
+# Logging Service
+
+- Microservices Architecture
+- Clean Architecture
+- Express
+- Docker
