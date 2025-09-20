@@ -4,4 +4,4 @@ limits:
     "": 100
     "src/": 200
 ignore:
-  - package-lock.json
+  - "package-lock.json"
