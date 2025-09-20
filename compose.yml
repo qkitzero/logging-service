@@ -1,0 +1,37 @@
+services:
+  logging-server:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    container_name: logging-server
+    restart: always
+    environment:
+      - HOST=${SERVER_HOST}
+      - PORT=${SERVER_CONTAINER_PORT}
+    depends_on:
+      logging-db:
+        condition: service_healthy
+    ports:
+      - "${SERVER_HOST_PORT}:${SERVER_CONTAINER_PORT}"
+
+  logging-db:
+    image: postgres:17
+    container_name: logging-db
+    restart: always
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "${DB_HOST_PORT}:${DB_CONTAINER_PORT}"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER}"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 10s
+    volumes:
+      - logging-db-data:/var/lib/postgresql/data
+
+volumes:
+  logging-db-data:
