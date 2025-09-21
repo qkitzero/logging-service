@@ -3,11 +3,11 @@ import { LogId } from "./logId";
 import { LogLevel } from "./logLevel";
 import { LogMessage } from "./logMessage";
 import { LogTimestamp } from "./logTimestamp";
-import { v4 as uuidv4 } from "uuid";
+import { v4 } from "uuid";
 
 describe("Log", () => {
   it("should create a Log instance with correct values", () => {
-    const id = new LogId(uuidv4());
+    const id = new LogId(v4());
     const level = new LogLevel(LogLevel.INFO);
     const message = new LogMessage("Test log message");
     const timestamp = new LogTimestamp(new Date());
