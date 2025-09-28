@@ -1,4 +1,4 @@
-import { validate } from "uuid";
+import { validate } from 'uuid';
 
 export class LogId {
   constructor(readonly value: string) {
