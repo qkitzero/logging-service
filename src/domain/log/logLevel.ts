@@ -1,8 +1,8 @@
 export class LogLevel {
-  static readonly INFO: string = "INFO";
-  static readonly WARN: string = "WARN";
-  static readonly ERROR: string = "ERROR";
-  static readonly DEBUG: string = "DEBUG";
+  static readonly INFO: string = 'INFO';
+  static readonly WARN: string = 'WARN';
+  static readonly ERROR: string = 'ERROR';
+  static readonly DEBUG: string = 'DEBUG';
 
   constructor(readonly value: string) {
     if (

@@ -1,5 +1,5 @@
-import { Request, Response } from "express";
-import { LogUseCase } from "../application/logUseCase";
+import { Request, Response } from 'express';
+import { LogUseCase } from '../application/logUseCase';
 
 export class LogController {
   constructor(private readonly logUseCase: LogUseCase) {}
@@ -9,7 +9,11 @@ export class LogController {
       serviceName,
       level,
       message,
-    }: { serviceName: string; level: string; message: string } = req.body;
+    }: {
+      serviceName: string;
+      level: string;
+      message: string;
+    } = req.body;
 
     const log = await this.logUseCase.createLog(serviceName, level, message);
 
@@ -32,7 +36,7 @@ export class LogController {
         level: log.level.value,
         message: log.message.value,
         timestamp: log.timestamp.value,
-      }))
+      })),
     );
   }
 }
