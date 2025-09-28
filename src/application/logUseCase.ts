@@ -27,4 +27,8 @@ export class LogUseCase {
 
     return log;
   }
+
+  async getAllLogs(): Promise<Log[]> {
+    return this.logRepository.findAll();
+  }
 }
