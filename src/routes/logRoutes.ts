@@ -12,5 +12,6 @@ const logUseCase = new LogUseCase(logRepository);
 const logController = new LogController(logUseCase);
 
 router.post("/", (req, res) => logController.createLog(req, res));
+router.get("/", (req, res) => logController.getAllLogs(req, res));
 
 export default router;

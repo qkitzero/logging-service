@@ -21,4 +21,18 @@ export class LogController {
       timestamp: log.timestamp.value,
     });
   }
+
+  async getAllLogs(req: Request, res: Response) {
+    const logs = await this.logUseCase.getAllLogs();
+
+    res.status(200).json(
+      logs.map((log) => ({
+        id: log.id.value,
+        serviceName: log.serviceName.value,
+        level: log.level.value,
+        message: log.message.value,
+        timestamp: log.timestamp.value,
+      }))
+    );
+  }
 }
