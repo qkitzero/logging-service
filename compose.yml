@@ -8,6 +8,7 @@ services:
     environment:
       - HOST=${SERVER_HOST}
       - PORT=${SERVER_CONTAINER_PORT}
+      - DB_URL=${DB_URL}
     depends_on:
       logging-db:
         condition: service_healthy

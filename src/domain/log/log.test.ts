@@ -1,18 +1,18 @@
-import { Log } from "./log";
-import { LogId } from "./logId";
-import { ServiceName } from "./serviceName";
-import { LogLevel } from "./logLevel";
-import { LogMessage } from "./logMessage";
-import { LogTimestamp } from "./logTimestamp";
-import { v4 } from "uuid";
+import { v4 } from 'uuid';
+import { Id } from './id';
+import { Level } from './level';
+import { Log } from './log';
+import { Message } from './message';
+import { ServiceName } from './serviceName';
+import { Timestamp } from './timestamp';
 
-describe("Log", () => {
-  it("should create a Log instance with correct values", () => {
-    const id = new LogId(v4());
-    const serviceName = new ServiceName("test-service");
-    const level = new LogLevel(LogLevel.INFO);
-    const message = new LogMessage("Test log message");
-    const timestamp = new LogTimestamp(new Date());
+describe('Log', () => {
+  it('should create a Log instance with correct values', () => {
+    const id = new Id(v4());
+    const serviceName = new ServiceName('test-service');
+    const level = new Level(Level.INFO);
+    const message = new Message('Test log message');
+    const timestamp = new Timestamp(new Date());
 
     const log = new Log(id, serviceName, level, message, timestamp);
 

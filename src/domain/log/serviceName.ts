@@ -1,7 +1,7 @@
 export class InvalidServiceNameError extends Error {
   constructor(message: string) {
     super(message);
-    this.name = "InvalidServiceNameError";
+    this.name = 'InvalidServiceNameError';
   }
 }
 
@@ -10,12 +10,12 @@ export class ServiceName {
 
   constructor(readonly value: string) {
     if (value.trim().length === 0) {
-      throw new InvalidServiceNameError("ServiceName cannot be empty");
+      throw new InvalidServiceNameError('ServiceName cannot be empty');
     }
 
     if (value.length > ServiceName.MAX_LENGTH) {
       throw new InvalidServiceNameError(
-        `ServiceName cannot exceed ${ServiceName.MAX_LENGTH} characters`
+        `ServiceName cannot exceed ${ServiceName.MAX_LENGTH} characters`,
       );
     }
   }
