@@ -21,6 +21,26 @@ export class LogUseCase {
 
     await this.logRepository.create(log);
 
+    const output = {
+      id: log.id.value,
+      serviceName: log.serviceName.value,
+      level: log.level.value,
+      message: log.message.value,
+      timestamp: log.timestamp.value,
+    };
+
+    switch (log.level.value) {
+      case LogLevel.ERROR:
+        console.error(output);
+        break;
+      case LogLevel.WARN:
+        console.warn(output);
+        break;
+      default:
+        console.log(output);
+        break;
+    }
+
     return log;
   }
 
