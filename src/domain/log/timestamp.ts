@@ -1,3 +1,3 @@
-export class LogTimestamp {
+export class Timestamp {
   constructor(readonly value: Date) {}
 }
