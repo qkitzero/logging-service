@@ -1,10 +1,10 @@
 import { v4 } from 'uuid';
 import { ServiceName } from '../domain/log';
+import { Id as LogId } from '../domain/log/id';
+import { Level as LogLevel } from '../domain/log/level';
 import { Log } from '../domain/log/log';
-import { LogId } from '../domain/log/logId';
-import { LogLevel } from '../domain/log/logLevel';
-import { LogMessage } from '../domain/log/logMessage';
-import { LogTimestamp } from '../domain/log/logTimestamp';
+import { Message as LogMessage } from '../domain/log/message';
+import { Timestamp as LogTimestamp } from '../domain/log/timestamp';
 import { LogRepository } from '../infrastructure/logRepository';
 
 export class LogUseCase {
