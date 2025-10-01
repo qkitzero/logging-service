@@ -1,7 +1,13 @@
 import { PrismaClient } from '@prisma/client';
-import { LogId, LogLevel, LogMessage, LogTimestamp, ServiceName } from '../domain/log';
+import {
+  Id as LogId,
+  Level as LogLevel,
+  Message as LogMessage,
+  ServiceName as LogServiceName,
+  Timestamp as LogTimestamp,
+} from '../domain/log';
 import { Log } from '../domain/log/log';
-import { ILogRepository } from '../domain/log/logRepository';
+import { ILogRepository } from '../domain/log/repository';
 
 export class LogRepository implements ILogRepository {
   constructor(private readonly prisma: PrismaClient) {}
@@ -24,7 +30,7 @@ export class LogRepository implements ILogRepository {
       (log) =>
         new Log(
           new LogId(log.id),
-          new ServiceName(log.serviceName),
+          new LogServiceName(log.serviceName),
           new LogLevel(log.level),
           new LogMessage(log.message),
           new LogTimestamp(log.timestamp),
