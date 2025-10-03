@@ -25,7 +25,7 @@ export class LogController {
     });
   }
 
-  async getAllLogs(req: Request, res: Response) {
+  async getAllLogs(_req: Request, res: Response) {
     const logs = await this.logUseCase.getAllLogs();
 
     res.status(200).json(
