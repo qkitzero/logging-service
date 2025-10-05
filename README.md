@@ -8,3 +8,5 @@
 - Docker
 - Test
 - Codecov
+- ESLint
+- Prettier
