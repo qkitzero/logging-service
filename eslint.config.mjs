@@ -38,4 +38,10 @@ export default tseslint.config(
       ],
     },
   },
+  {
+    files: ['src/**/*.test.ts'],
+    rules: {
+      '@typescript-eslint/unbound-method': 'off',
+    },
+  },
 );
