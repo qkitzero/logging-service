@@ -1,5 +1,5 @@
 import { v4 } from 'uuid';
-import { ServiceName } from '../domain/log';
+import { ServiceName as LogServiceName } from '../domain/log';
 import { Id as LogId } from '../domain/log/id';
 import { Level as LogLevel } from '../domain/log/level';
 import { Log } from '../domain/log/log';
@@ -13,7 +13,7 @@ export class LogUseCase {
   async createLog(serviceName: string, level: string, message: string): Promise<Log> {
     const log = new Log(
       new LogId(v4()),
-      new ServiceName(serviceName),
+      new LogServiceName(serviceName),
       new LogLevel(level),
       new LogMessage(message),
       new LogTimestamp(new Date()),
