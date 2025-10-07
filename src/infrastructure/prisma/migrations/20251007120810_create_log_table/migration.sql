@@ -1,10 +1,10 @@
 -- CreateTable
-CREATE TABLE "public"."Log" (
+CREATE TABLE "public"."logs" (
     "id" TEXT NOT NULL,
     "serviceName" TEXT NOT NULL,
     "level" TEXT NOT NULL,
     "message" TEXT NOT NULL,
     "timestamp" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "Log_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "logs_pkey" PRIMARY KEY ("id")
 );

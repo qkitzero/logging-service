@@ -7,9 +7,9 @@ import {
   Timestamp as LogTimestamp,
 } from '../domain/log';
 import { Log } from '../domain/log/log';
-import { ILogRepository } from '../domain/log/repository';
+import { LogRepository } from '../domain/log/repository';
 
-export class LogRepository implements ILogRepository {
+export class LogRepositoryImpl implements LogRepository {
   constructor(private readonly prisma: PrismaClient) {}
 
   async create(log: Log): Promise<void> {
