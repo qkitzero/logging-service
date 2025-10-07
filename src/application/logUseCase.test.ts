@@ -1,5 +1,5 @@
 import { LogRepository } from '../domain/log/repository';
-import { LogUseCase } from './logUseCase';
+import { LogUseCaseImpl } from './logUseCase';
 
 describe('LogUseCase', () => {
   const setup = () => {
@@ -7,7 +7,7 @@ describe('LogUseCase', () => {
       create: jest.fn(),
       findAll: jest.fn(),
     };
-    const logUseCase = new LogUseCase(mockLogRepository);
+    const logUseCase = new LogUseCaseImpl(mockLogRepository);
     return { mockLogRepository, logUseCase };
   };
 

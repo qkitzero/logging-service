@@ -4,15 +4,12 @@ import { LogUseCase } from '../application/logUseCase';
 export class LogController {
   constructor(private readonly logUseCase: LogUseCase) {}
 
-  async createLog(
-    req: Request<
-      Record<string, never>,
-      unknown,
-      { serviceName: string; level: string; message: string }
-    >,
-    res: Response,
-  ) {
-    const { serviceName, level, message } = req.body;
+  async createLog(req: Request, res: Response) {
+    const { serviceName, level, message } = req.body as {
+      serviceName: string;
+      level: string;
+      message: string;
+    };
 
     const log = await this.logUseCase.createLog(serviceName, level, message);
 

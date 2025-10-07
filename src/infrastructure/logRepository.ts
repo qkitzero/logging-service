@@ -9,7 +9,7 @@ import {
 import { Log } from '../domain/log/log';
 import { LogRepository } from '../domain/log/repository';
 
-export class PrismaLogRepository implements LogRepository {
+export class LogRepositoryImpl implements LogRepository {
   constructor(private readonly prisma: PrismaClient) {}
 
   async create(log: Log): Promise<void> {

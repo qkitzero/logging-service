@@ -7,7 +7,12 @@ import { Message as LogMessage } from '../domain/log/message';
 import { LogRepository } from '../domain/log/repository';
 import { Timestamp as LogTimestamp } from '../domain/log/timestamp';
 
-export class LogUseCase {
+export interface LogUseCase {
+  createLog(serviceName: string, level: string, message: string): Promise<Log>;
+  getAllLogs(): Promise<Log[]>;
+}
+
+export class LogUseCaseImpl implements LogUseCase {
   constructor(private readonly logRepository: LogRepository) {}
 
   async createLog(serviceName: string, level: string, message: string): Promise<Log> {
