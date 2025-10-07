@@ -13,4 +13,6 @@ model Log {
   level       String
   message     String
   timestamp   DateTime
+
+  @@map("logs")
 }
