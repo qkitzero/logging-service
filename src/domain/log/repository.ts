@@ -1,6 +1,6 @@
 import { Log } from './log';
 
-export interface ILogRepository {
+export interface LogRepository {
   create(log: Log): Promise<void>;
   findAll(): Promise<Log[]>;
 }
