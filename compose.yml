@@ -6,7 +6,6 @@ services:
     container_name: logging-server
     restart: always
     environment:
-      - HOST=${SERVER_HOST}
       - PORT=${SERVER_CONTAINER_PORT}
       - DB_URL=${DB_URL}
     depends_on:
