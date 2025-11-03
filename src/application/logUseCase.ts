@@ -24,7 +24,7 @@ export class LogUseCaseImpl implements LogUseCase {
       new LogTimestamp(new Date()),
     );
 
-    await this.logRepository.create(log);
+    if (log.level.value === LogLevel.ERROR) await this.logRepository.create(log);
 
     const output = {
       id: log.id.value,
