@@ -36,13 +36,13 @@ export class LogUseCaseImpl implements LogUseCase {
 
     switch (log.level.value) {
       case LogLevel.ERROR:
-        console.error(output);
+        console.error(JSON.stringify(output));
         break;
       case LogLevel.WARN:
-        console.warn(output);
+        console.warn(JSON.stringify(output));
         break;
       default:
-        console.log(output);
+        console.log(JSON.stringify(output));
         break;
     }
 
