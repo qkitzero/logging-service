@@ -11,13 +11,10 @@ export class Level {
   static readonly ERROR: string = 'ERROR';
   static readonly DEBUG: string = 'DEBUG';
 
+  static readonly ALL = [Level.INFO, Level.WARN, Level.ERROR, Level.DEBUG] as const;
+
   constructor(readonly value: string) {
-    if (
-      value !== Level.INFO &&
-      value !== Level.WARN &&
-      value !== Level.ERROR &&
-      value !== Level.DEBUG
-    ) {
+    if (!Level.ALL.includes(value)) {
       throw new InvalidLevelError(`Invalid Level: ${value}`);
     }
   }
