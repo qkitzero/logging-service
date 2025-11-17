@@ -1,7 +1,9 @@
 limits:
   files: 15
   lines:
-    "": 100
-    "src/": 200
+    '': 100
+    'src/': 200
 ignore:
-  - "package-lock.json"
+  - 'package-lock.json'
+  - 'src/infrastructure/api/**/openapi3.json'
+  - 'src/infrastructure/api/**/schema.ts'
