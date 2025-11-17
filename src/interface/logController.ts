@@ -1,10 +1,47 @@
 import { Request, Response } from 'express';
+import { AuthUseCase } from '../application/authUseCase';
 import { LogUseCase } from '../application/logUseCase';
+import { AuthError } from '../infrastructure/api/authUseCase';
 
 export class LogController {
-  constructor(private readonly logUseCase: LogUseCase) {}
+  constructor(
+    private readonly authUseCase: AuthUseCase,
+    private readonly logUseCase: LogUseCase,
+  ) {}
 
   async createLog(req: Request, res: Response) {
+    const header = req.headers.authorization;
+    if (!header) {
+      return res.status(401).json({
+        error: AuthError.name,
+        message: 'Token is missing',
+      });
+    }
+
+    const [scheme, token] = header.split(' ');
+    if (scheme.toLowerCase() !== 'bearer' || !token) {
+      return res.status(401).json({
+        error: AuthError.name,
+        message: 'Invalid Authorization format',
+      });
+    }
+
+    try {
+      await this.authUseCase.verifyToken(token);
+    } catch (error) {
+      if (error instanceof AuthError) {
+        return res.status(401).json({
+          error: error.name,
+          message: error.message,
+        });
+      }
+
+      return res.status(500).json({
+        error: 'InternalServerError',
+        message: 'Unexpected server error',
+      });
+    }
+
     const { serviceName, level, message } = req.body as {
       serviceName: string;
       level: string;

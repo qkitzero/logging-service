@@ -3,11 +3,16 @@ services:
     build:
       context: .
       dockerfile: ./Dockerfile
+      secrets:
+        - npmrc
     container_name: logging-server
     restart: always
     environment:
+      - ENV=${ENV}
       - PORT=${SERVER_CONTAINER_PORT}
       - DB_URL=${DB_URL}
+      - AUTH_SERVICE_HOST=${AUTH_SERVICE_HOST}
+      - AUTH_SERVICE_PORT=${AUTH_SERVICE_PORT}
     depends_on:
       logging-db:
         condition: service_healthy
@@ -35,3 +40,7 @@ services:
 
 volumes:
   logging-db-data:
+
+secrets:
+  npmrc:
+    file: .npmrc

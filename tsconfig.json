@@ -10,5 +10,8 @@
     "strictNullChecks": true,
     "forceConsistentCasingInFileNames": true,
     "sourceMap": true
-  }
+  },
+  "exclude": [
+    "**/*.test.ts"
+  ]
 }
