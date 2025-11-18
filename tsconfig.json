@@ -11,7 +11,4 @@
     "forceConsistentCasingInFileNames": true,
     "sourceMap": true
   },
-  "exclude": [
-    "**/*.test.ts"
-  ]
 }
