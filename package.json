@@ -4,7 +4,6 @@
   "main": "dist/server.js",
   "scripts": {
     "format": "prettier --write \"src/**/*.ts\"",
-    "lint": "eslint \"src/**/*.ts\"",
     "lint:fix": "eslint \"src/**/*.ts\" --fix",
     "lint:ci": "eslint \"src/**/*.ts\"",
     "generate:openapi3": "swagger2openapi ./node_modules/@qkitzero/auth-service-openapi/gen/openapiv2/auth/v1/auth.swagger.json -o ./src/infrastructure/api/auth/openapi.json",
