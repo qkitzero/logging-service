@@ -10,5 +10,5 @@
     "strictNullChecks": true,
     "forceConsistentCasingInFileNames": true,
     "sourceMap": true
-  },
+  }
 }
