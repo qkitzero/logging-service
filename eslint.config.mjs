@@ -8,8 +8,8 @@ export default tseslint.config(
     ignores: [
       'dist/',
       'coverage/',
-      'src/infrastructure/api/**/openapi.json',
-      'src/infrastructure/api/**/schema.ts',
+      'src/infrastructure/api/**/*.openapi.json',
+      'src/infrastructure/api/**/*.schema.ts',
       'eslint.config.mjs',
     ],
   },

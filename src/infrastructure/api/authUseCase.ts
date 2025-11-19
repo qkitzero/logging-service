@@ -1,6 +1,6 @@
 import createClient from 'openapi-fetch';
 import { AuthUseCase } from '../../application/authUseCase';
-import { paths } from './auth/schema';
+import { paths } from './auth.schema';
 
 export class AuthError extends Error {
   constructor(message: string) {
