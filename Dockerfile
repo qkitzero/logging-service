@@ -1,7 +1,7 @@
 FROM node:24-alpine AS builder
 WORKDIR /usr/src/app
 COPY package*.json ./
-RUN npm install
+RUN --mount=type=secret,id=npmrc,target=.npmrc npm install
 COPY . .
 RUN npx prisma generate --schema=src/infrastructure/prisma/schema.prisma
 RUN npm run build

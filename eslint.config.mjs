@@ -5,7 +5,13 @@ import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
   {
-    ignores: ['dist/', 'coverage/', 'eslint.config.mjs'],
+    ignores: [
+      'dist/',
+      'coverage/',
+      'src/infrastructure/api/**/*.openapi.json',
+      'src/infrastructure/api/**/*.schema.ts',
+      'eslint.config.mjs',
+    ],
   },
   eslint.configs.recommended,
   ...tseslint.configs.recommendedTypeChecked,
