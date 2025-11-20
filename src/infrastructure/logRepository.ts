@@ -24,6 +24,22 @@ export class LogRepositoryImpl implements LogRepository {
     });
   }
 
+  async findById(id: LogId): Promise<Log | null> {
+    const log = await this.prisma.log.findUnique({
+      where: { id: id.value },
+    });
+    if (!log) {
+      return null;
+    }
+    return new Log(
+      new LogId(log.id),
+      new LogServiceName(log.serviceName),
+      new LogLevel(log.level),
+      new LogMessage(log.message),
+      new LogTimestamp(log.timestamp),
+    );
+  }
+
   async findAll(): Promise<Log[]> {
     const logs = await this.prisma.log.findMany();
     return logs.map(
