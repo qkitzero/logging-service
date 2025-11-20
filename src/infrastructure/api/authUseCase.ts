@@ -10,15 +10,7 @@ export class AuthError extends Error {
 }
 
 export class AuthUseCaseImpl implements AuthUseCase {
-  private readonly client: ReturnType<typeof createClient<paths>>;
-
-  constructor() {
-    const protocol = process.env.ENV === 'production' ? 'https' : 'http';
-    const host = process.env.AUTH_SERVICE_HOST;
-    const port = process.env.AUTH_SERVICE_PORT;
-    const baseUrl = `${protocol}://${host}:${port}`;
-    this.client = createClient<paths>({ baseUrl });
-  }
+  constructor(private readonly client: ReturnType<typeof createClient<paths>>) {}
 
   async verifyToken(token: string): Promise<string> {
     const { data, error } = await this.client.POST('/v1/verify', {
