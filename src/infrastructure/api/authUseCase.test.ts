@@ -40,7 +40,7 @@ describe('AuthUseCase', () => {
         error: { message: 'Unauthorized' },
       });
 
-      await expect(authUseCase.verifyToken(token)).rejects.toThrow(AuthError);
+      await expect(authUseCase.verifyToken(token)).rejects.toThrow(new AuthError('Unauthorized'));
       expect(mockClient.POST).toHaveBeenCalledWith('/v1/verify', {
         headers: { Authorization: `Bearer ${token}` },
         body: {},
@@ -57,7 +57,9 @@ describe('AuthUseCase', () => {
         error: {},
       });
 
-      await expect(authUseCase.verifyToken(token)).rejects.toThrow(AuthError);
+      await expect(authUseCase.verifyToken(token)).rejects.toThrow(
+        new AuthError('Failed to verify token'),
+      );
       expect(mockClient.POST).toHaveBeenCalledWith('/v1/verify', {
         headers: { Authorization: `Bearer ${token}` },
         body: {},
@@ -74,7 +76,9 @@ describe('AuthUseCase', () => {
         error: undefined,
       });
 
-      await expect(authUseCase.verifyToken(token)).rejects.toThrow(AuthError);
+      await expect(authUseCase.verifyToken(token)).rejects.toThrow(
+        new AuthError('UserId is missing'),
+      );
       expect(mockClient.POST).toHaveBeenCalledWith('/v1/verify', {
         headers: { Authorization: `Bearer ${token}` },
         body: {},
