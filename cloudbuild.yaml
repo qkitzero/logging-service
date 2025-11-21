@@ -6,7 +6,7 @@ steps:
       - |
         export NPM_TOKEN=$(gcloud secrets versions access latest --secret=github-packages-token)
         echo "@qkitzero:registry=https://npm.pkg.github.com" > .npmrc
-        echo "//npm.pkg.github.com/:_authToken=${NPM_TOKEN}" >> .npmrc
+        echo "//npm.pkg.github.com/:_authToken=\${NPM_TOKEN}" >> .npmrc
 
   - name: gcr.io/cloud-builders/docker
     entrypoint: docker
