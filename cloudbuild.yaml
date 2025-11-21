@@ -1,11 +1,20 @@
 steps:
+  - name: gcr.io/google.com/cloudsdktool/cloud-sdk
+    entrypoint: bash
+    args:
+      - -c
+      - |
+        export NPM_TOKEN=$(gcloud secrets versions access latest --secret=github-packages-token)
+        echo "@qkitzero:registry=https://npm.pkg.github.com" > .npmrc
+        echo "//npm.pkg.github.com/:_authToken=${NPM_TOKEN}" >> .npmrc
+
   - name: gcr.io/cloud-builders/docker
     entrypoint: docker
     env:
       - DOCKER_BUILDKIT=1
     args:
       - build
-      - --secret=id=npmrc,source=projects/$PROJECT_ID/secrets/npmrc/versions/latest
+      - --secret=id=npmrc,source=.npmrc
       - -t
       - us-central1-docker.pkg.dev/$PROJECT_ID/logging-service/$COMMIT_SHA
       - -f
