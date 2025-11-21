@@ -1,22 +1,26 @@
 steps:
-  - name: 'gcr.io/cloud-builders/docker'
+  - name: gcr.io/cloud-builders/docker
+    entrypoint: docker
+    env:
+      - DOCKER_BUILDKIT=1
     args:
-      [
-        'build',
-        '-t',
-        'us-central1-docker.pkg.dev/$PROJECT_ID/logging-service/$COMMIT_SHA',
-        '-f',
-        './Dockerfile',
-        '.',
-      ]
+      - build
+      - --secret=id=npmrc,source=projects/$PROJECT_ID/secrets/npmrc/versions/latest
+      - -t
+      - us-central1-docker.pkg.dev/$PROJECT_ID/logging-service/$COMMIT_SHA
+      - -f
+      - ./Dockerfile
+      - .
 
-  - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'us-central1-docker.pkg.dev/$PROJECT_ID/logging-service/$COMMIT_SHA']
-
-  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-    entrypoint: 'bash'
+  - name: gcr.io/cloud-builders/docker
     args:
-      - '-c'
+      - push
+      - us-central1-docker.pkg.dev/$PROJECT_ID/logging-service/$COMMIT_SHA
+
+  - name: gcr.io/google.com/cloudsdktool/cloud-sdk
+    entrypoint: bash
+    args:
+      - -c
       - |
         gcloud secrets versions access latest --secret=logging-service-env-file > .env
         gcloud run deploy logging-service \
@@ -26,7 +30,7 @@ steps:
           --set-env-vars=$(cat .env | xargs | sed 's/ /,/g')
 
 images:
-  - 'us-central1-docker.pkg.dev/$PROJECT_ID/logging-service/$COMMIT_SHA'
+  - us-central1-docker.pkg.dev/$PROJECT_ID/logging-service/$COMMIT_SHA
 
 options:
   logging: CLOUD_LOGGING_ONLY
