@@ -6,7 +6,7 @@ steps:
       - |
         TOKEN=$(gcloud secrets versions access latest --secret=github-packages-token)
         echo "@qkitzero:registry=https://npm.pkg.github.com" > .npmrc
-        printf "//npm.pkg.github.com/:_authToken=%s\n" "$TOKEN" >> .npmrc
+        printf "//npm.pkg.github.com/:_authToken=%s\n" "$$TOKEN" >> .npmrc
 
   - name: gcr.io/cloud-builders/docker
     entrypoint: docker
@@ -36,7 +36,7 @@ steps:
           --image=us-central1-docker.pkg.dev/$PROJECT_ID/logging-service/$COMMIT_SHA \
           --region=us-central1 \
           --platform=managed \
-          --set-env-vars=$(cat .env | xargs | sed 's/ /,/g')
+          --set-env-vars=$$(cat .env | xargs | sed 's/ /,/g')
 
 images:
   - us-central1-docker.pkg.dev/$PROJECT_ID/logging-service/$COMMIT_SHA
