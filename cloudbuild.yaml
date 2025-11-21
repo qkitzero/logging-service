@@ -1,32 +1,45 @@
 steps:
-  - name: 'gcr.io/cloud-builders/docker'
+  - name: gcr.io/google.com/cloudsdktool/cloud-sdk
+    entrypoint: bash
     args:
-      [
-        'build',
-        '-t',
-        'us-central1-docker.pkg.dev/$PROJECT_ID/logging-service/$COMMIT_SHA',
-        '-f',
-        './Dockerfile',
-        '.',
-      ]
+      - -c
+      - |
+        NPM_TOKEN=$$(gcloud secrets versions access latest --secret=github-packages-token)
+        echo "@qkitzero:registry=https://npm.pkg.github.com" > .npmrc
+        echo "//npm.pkg.github.com/:_authToken=$$NPM_TOKEN" >> .npmrc
 
-  - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'us-central1-docker.pkg.dev/$PROJECT_ID/logging-service/$COMMIT_SHA']
-
-  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-    entrypoint: 'bash'
+  - name: gcr.io/cloud-builders/docker
+    entrypoint: docker
+    env:
+      - DOCKER_BUILDKIT=1
     args:
-      - '-c'
+      - build
+      - --secret=id=npmrc,source=.npmrc
+      - -t
+      - us-central1-docker.pkg.dev/$PROJECT_ID/logging-service/$COMMIT_SHA
+      - -f
+      - ./Dockerfile
+      - .
+
+  - name: gcr.io/cloud-builders/docker
+    args:
+      - push
+      - us-central1-docker.pkg.dev/$PROJECT_ID/logging-service/$COMMIT_SHA
+
+  - name: gcr.io/google.com/cloudsdktool/cloud-sdk
+    entrypoint: bash
+    args:
+      - -c
       - |
         gcloud secrets versions access latest --secret=logging-service-env-file > .env
         gcloud run deploy logging-service \
           --image=us-central1-docker.pkg.dev/$PROJECT_ID/logging-service/$COMMIT_SHA \
           --region=us-central1 \
           --platform=managed \
-          --set-env-vars=$(cat .env | xargs | sed 's/ /,/g')
+          --set-env-vars=$$(cat .env | xargs | sed 's/ /,/g')
 
 images:
-  - 'us-central1-docker.pkg.dev/$PROJECT_ID/logging-service/$COMMIT_SHA'
+  - us-central1-docker.pkg.dev/$PROJECT_ID/logging-service/$COMMIT_SHA
 
 options:
   logging: CLOUD_LOGGING_ONLY
