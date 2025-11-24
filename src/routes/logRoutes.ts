@@ -6,6 +6,8 @@ import { paths } from '../infrastructure/api/auth.schema';
 import { AuthUseCaseImpl } from '../infrastructure/api/authUseCase';
 import { LogRepositoryImpl } from '../infrastructure/logRepository';
 import { LogController } from '../interface/logController';
+import { CreateLogRequestSchema, GetAllLogsRequestSchema } from '../interface/logSchema';
+import { validate } from '../interface/middleware/validate';
 
 const router = Router();
 
@@ -23,7 +25,9 @@ const logUseCase = new LogUseCaseImpl(logRepository);
 
 const logController = new LogController(authUseCase, logUseCase);
 
-router.post('/', (req, res) => logController.createLog(req, res));
-router.get('/', (req, res) => logController.getAllLogs(req, res));
+router.post('/', validate(CreateLogRequestSchema), (req, res) => logController.createLog(req, res));
+router.get('/', validate(GetAllLogsRequestSchema), (req, res) =>
+  logController.getAllLogs(req, res),
+);
 
 export default router;
