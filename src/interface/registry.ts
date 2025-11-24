@@ -1,9 +1,17 @@
-import { OpenApiGeneratorV3, OpenAPIRegistry } from '@asteasolutions/zod-to-openapi';
+import {
+  extendZodWithOpenApi,
+  OpenApiGeneratorV3,
+  OpenAPIRegistry,
+} from '@asteasolutions/zod-to-openapi';
 import * as fs from 'fs';
+import { z } from 'zod';
+import { RegisterLog } from './logRegistry';
 
-export const registry = new OpenAPIRegistry();
+extendZodWithOpenApi(z);
 
-import './logRegistry';
+const registry = new OpenAPIRegistry();
+
+RegisterLog(registry);
 
 function getOpenApiDocumentation() {
   const generator = new OpenApiGeneratorV3(registry.definitions);

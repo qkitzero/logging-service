@@ -58,7 +58,39 @@ export class LogController {
     res.status(200).json(createLogResponse);
   }
 
-  async getAllLogs(_req: Request, res: Response) {
+  async getAllLogs(req: Request, res: Response) {
+    const header = req.headers.authorization;
+    if (!header) {
+      return res.status(401).json({
+        error: AuthError.name,
+        message: 'Token is missing',
+      });
+    }
+
+    const [scheme, token] = header.split(' ');
+    if (scheme.toLowerCase() !== 'bearer' || !token) {
+      return res.status(401).json({
+        error: AuthError.name,
+        message: 'Invalid Authorization format',
+      });
+    }
+
+    try {
+      await this.authUseCase.verifyToken(token);
+    } catch (error) {
+      if (error instanceof AuthError) {
+        return res.status(401).json({
+          error: error.name,
+          message: error.message,
+        });
+      }
+
+      return res.status(500).json({
+        error: 'InternalServerError',
+        message: 'Unexpected server error',
+      });
+    }
+
     const logs = await this.logUseCase.getAllLogs();
 
     const getAllLogsResponse: GetAllLogsResponse = logs.map((log) => ({
