@@ -1,11 +1,11 @@
 {
   "name": "logging-service",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "main": "dist/server.js",
   "scripts": {
     "format": "prettier --write \"src/**/*.ts\"",
+    "lint": "eslint \"src/**/*.ts\"",
     "lint:fix": "eslint \"src/**/*.ts\" --fix",
-    "lint:ci": "eslint \"src/**/*.ts\"",
     "generate:openapi3": "swagger2openapi ./node_modules/@qkitzero/auth-service-openapi/gen/openapiv2/auth/v1/auth.swagger.json -o ./src/infrastructure/api/auth.openapi.json",
     "generate:schema": "openapi-typescript ./src/infrastructure/api/auth.openapi.json -o ./src/infrastructure/api/auth.schema.ts",
     "generate:all": "npm run generate:openapi3 && npm run generate:schema",
@@ -25,6 +25,7 @@
   "devDependencies": {
     "@eslint/js": "^9.36.0",
     "@qkitzero/auth-service-openapi": "^1.4.9",
+    "@tsconfig/node24": "^24.0.3",
     "@types/express": "^5.0.3",
     "@types/jest": "^30.0.0",
     "@types/node": "^24.5.2",
