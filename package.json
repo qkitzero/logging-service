@@ -9,7 +9,7 @@
     "generate:openapi": "ts-node ./src/interface/registry.ts",
     "generate:auth:openapi": "swagger2openapi ./node_modules/@qkitzero/auth-service-openapi/gen/openapiv2/auth/v1/auth.swagger.json -o ./src/infrastructure/api/auth.openapi.json",
     "generate:auth:schema": "openapi-typescript ./src/infrastructure/api/auth.openapi.json -o ./src/infrastructure/api/auth.schema.ts",
-    "generate:all": "npm run generate:auth:openapi && npm run generate:auth:schema",
+    "generate:all": "npm run generate:auth:openapi && npm run generate:auth:schema && npm run generate:openapi",
     "build": "rimraf dist && tsc",
     "start": "node dist/server.js",
     "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
