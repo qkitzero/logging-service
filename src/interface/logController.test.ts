@@ -69,9 +69,11 @@ describe('LogController', () => {
 
   describe('getAllLogs', () => {
     it('should get all logs and return 200', async () => {
-      const { mockLogUseCase, logController } = setup();
+      const { mockAuthUseCase, mockLogUseCase, logController } = setup();
 
-      const req = {} as Request;
+      const req = {
+        headers: { authorization: 'Bearer valid-token' },
+      } as Request;
 
       const res = {
         status: jest.fn().mockReturnThis(),
@@ -85,6 +87,7 @@ describe('LogController', () => {
         new LogMessage('Test message'),
         new LogTimestamp(new Date()),
       );
+      mockAuthUseCase.verifyToken.mockResolvedValue('user-id');
       mockLogUseCase.getAllLogs.mockResolvedValue([log]);
 
       await logController.getAllLogs(req, res);
