@@ -6,9 +6,10 @@
     "format": "prettier --write \"src/**/*.ts\"",
     "lint": "eslint \"src/**/*.ts\"",
     "lint:fix": "eslint \"src/**/*.ts\" --fix",
-    "generate:openapi3": "swagger2openapi ./node_modules/@qkitzero/auth-service-openapi/gen/openapiv2/auth/v1/auth.swagger.json -o ./src/infrastructure/api/auth.openapi.json",
-    "generate:schema": "openapi-typescript ./src/infrastructure/api/auth.openapi.json -o ./src/infrastructure/api/auth.schema.ts",
-    "generate:all": "npm run generate:openapi3 && npm run generate:schema",
+    "generate:openapi": "ts-node ./src/interface/registry.ts",
+    "generate:auth:openapi": "swagger2openapi ./node_modules/@qkitzero/auth-service-openapi/gen/openapiv2/auth/v1/auth.swagger.json -o ./src/infrastructure/api/auth.openapi.json",
+    "generate:auth:schema": "openapi-typescript ./src/infrastructure/api/auth.openapi.json -o ./src/infrastructure/api/auth.schema.ts",
+    "generate:all": "npm run generate:auth:openapi && npm run generate:auth:schema && npm run generate:openapi",
     "build": "rimraf dist && tsc",
     "start": "node dist/server.js",
     "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
@@ -17,10 +18,12 @@
     "coverage:open": "open coverage/lcov-report/index.html"
   },
   "dependencies": {
+    "@asteasolutions/zod-to-openapi": "^8.1.0",
     "@prisma/client": "^6.16.2",
     "express": "^5.1.0",
     "openapi-fetch": "^0.15.0",
-    "uuid": "^13.0.0"
+    "uuid": "^13.0.0",
+    "zod": "^4.1.13"
   },
   "devDependencies": {
     "@eslint/js": "^9.36.0",
