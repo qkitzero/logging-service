@@ -10,6 +10,7 @@ export default tseslint.config(
       'coverage/',
       'src/infrastructure/api/**/*.openapi.json',
       'src/infrastructure/api/**/*.schema.ts',
+      'src/interface/openapi.json',
       'eslint.config.mjs',
     ],
   },
