@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { v4 } from 'uuid';
+import { AuthUseCase } from '../application/authUseCase';
 import { LogUseCase } from '../application/logUseCase';
 import {
   Log,
@@ -13,19 +14,23 @@ import { LogController } from './logController';
 
 describe('LogController', () => {
   const setup = () => {
+    const mockAuthUseCase: jest.Mocked<AuthUseCase> = {
+      verifyToken: jest.fn(),
+    };
     const mockLogUseCase: jest.Mocked<LogUseCase> = {
       createLog: jest.fn(),
       getAllLogs: jest.fn(),
     };
-    const logController = new LogController(mockLogUseCase);
-    return { mockLogUseCase, logController };
+    const logController = new LogController(mockAuthUseCase, mockLogUseCase);
+    return { mockAuthUseCase, mockLogUseCase, logController };
   };
 
   describe('createLog', () => {
     it('should create a log and return 200', async () => {
-      const { mockLogUseCase, logController } = setup();
+      const { mockAuthUseCase, mockLogUseCase, logController } = setup();
 
       const req = {
+        headers: { authorization: 'Bearer valid-token' },
         body: {
           serviceName: 'test-service',
           level: 'INFO',
@@ -45,6 +50,7 @@ describe('LogController', () => {
         new LogMessage('Test message'),
         new LogTimestamp(new Date()),
       );
+      mockAuthUseCase.verifyToken.mockResolvedValue('user-id');
       mockLogUseCase.createLog.mockResolvedValue(log);
 
       await logController.createLog(req, res);
@@ -63,9 +69,11 @@ describe('LogController', () => {
 
   describe('getAllLogs', () => {
     it('should get all logs and return 200', async () => {
-      const { mockLogUseCase, logController } = setup();
+      const { mockAuthUseCase, mockLogUseCase, logController } = setup();
 
-      const req = {} as Request;
+      const req = {
+        headers: { authorization: 'Bearer valid-token' },
+      } as Request;
 
       const res = {
         status: jest.fn().mockReturnThis(),
@@ -79,6 +87,7 @@ describe('LogController', () => {
         new LogMessage('Test message'),
         new LogTimestamp(new Date()),
       );
+      mockAuthUseCase.verifyToken.mockResolvedValue('user-id');
       mockLogUseCase.getAllLogs.mockResolvedValue([log]);
 
       await logController.getAllLogs(req, res);

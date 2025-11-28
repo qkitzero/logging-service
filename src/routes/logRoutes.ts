@@ -7,7 +7,6 @@ import { AuthUseCaseImpl } from '../infrastructure/api/authUseCase';
 import { LogRepositoryImpl } from '../infrastructure/logRepository';
 import { LogController } from '../interface/logController';
 import { CreateLogRequestSchema, GetAllLogsRequestSchema } from '../interface/logSchema';
-import { AuthMiddleware } from '../interface/middleware/auth';
 import { validate } from '../interface/middleware/validate';
 
 const router = Router();
@@ -24,14 +23,10 @@ const logRepository = new LogRepositoryImpl(prisma);
 const authUseCase = new AuthUseCaseImpl(authClient);
 const logUseCase = new LogUseCaseImpl(logRepository);
 
-const authMiddleware = new AuthMiddleware(authUseCase);
+const logController = new LogController(authUseCase, logUseCase);
 
-const logController = new LogController(logUseCase);
-
-router.post('/', authMiddleware.verifyToken, validate(CreateLogRequestSchema), (req, res) =>
-  logController.createLog(req, res),
-);
-router.get('/', authMiddleware.verifyToken, validate(GetAllLogsRequestSchema), (req, res) =>
+router.post('/', validate(CreateLogRequestSchema), (req, res) => logController.createLog(req, res));
+router.get('/', validate(GetAllLogsRequestSchema), (req, res) =>
   logController.getAllLogs(req, res),
 );
 

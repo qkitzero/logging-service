@@ -6,7 +6,7 @@ import {
   GetAllLogsResponseSchema,
 } from './logSchema';
 
-export const registerLog = (registry: OpenAPIRegistry) => {
+export const RegisterLog = (registry: OpenAPIRegistry) => {
   const bearerAuth = registry.registerComponent('securitySchemes', 'bearerAuth', {
     type: 'http',
     scheme: 'bearer',
