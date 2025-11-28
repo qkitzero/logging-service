@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
 import { z } from 'zod';
 
-export const validate =
-  (schema: z.ZodObject) => (req: Request, res: Response, next: NextFunction) => {
+export class ValidateMiddleware {
+  handle = (schema: z.ZodObject) => (req: Request, res: Response, next: NextFunction) => {
     try {
       req.body = schema.parse(req.body);
       next();
@@ -16,3 +16,4 @@ export const validate =
       next(error);
     }
   };
+}
