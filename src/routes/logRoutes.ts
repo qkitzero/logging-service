@@ -28,17 +28,11 @@ const authMiddleware = new AuthMiddleware(authUseCase);
 
 const logController = new LogController(logUseCase);
 
-router.post(
-  '/',
-  (req, res, next) => authMiddleware.verifyToken(req, res, next),
-  validate(CreateLogRequestSchema),
-  (req, res) => logController.createLog(req, res),
+router.post('/', authMiddleware.verifyToken, validate(CreateLogRequestSchema), (req, res) =>
+  logController.createLog(req, res),
 );
-router.get(
-  '/',
-  (req, res, next) => authMiddleware.verifyToken(req, res, next),
-  validate(GetAllLogsRequestSchema),
-  (req, res) => logController.getAllLogs(req, res),
+router.get('/', authMiddleware.verifyToken, validate(GetAllLogsRequestSchema), (req, res) =>
+  logController.getAllLogs(req, res),
 );
 
 export default router;

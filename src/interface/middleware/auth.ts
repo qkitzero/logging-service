@@ -5,7 +5,7 @@ import { AuthError } from '../../infrastructure/api/authUseCase';
 export class AuthMiddleware {
   constructor(private readonly authUseCase: AuthUseCase) {}
 
-  async verifyToken(req: Request, res: Response, next: NextFunction) {
+  verifyToken = async (req: Request, res: Response, next: NextFunction) => {
     const header = req.headers.authorization;
     if (!header) {
       return res.status(401).json({
@@ -38,5 +38,5 @@ export class AuthMiddleware {
         message: 'Unexpected server error',
       });
     }
-  }
+  };
 }
