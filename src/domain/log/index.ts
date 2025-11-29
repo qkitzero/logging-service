@@ -5,3 +5,4 @@ export * from './message';
 export * from './repository';
 export * from './serviceName';
 export * from './timestamp';
+export * from './userId';

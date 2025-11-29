@@ -2,6 +2,12 @@ import { NextFunction, Request, Response } from 'express';
 import { AuthUseCase } from '../../application/authUseCase';
 import { AuthError } from '../../infrastructure/api/authUseCase';
 
+declare module 'express' {
+  interface Request {
+    userId?: string;
+  }
+}
+
 export class AuthMiddleware {
   constructor(private readonly authUseCase: AuthUseCase) {}
 
@@ -23,7 +29,8 @@ export class AuthMiddleware {
     }
 
     try {
-      await this.authUseCase.verifyToken(token);
+      const userId = await this.authUseCase.verifyToken(token);
+      req.userId = userId;
       next();
     } catch (error) {
       if (error instanceof AuthError) {
