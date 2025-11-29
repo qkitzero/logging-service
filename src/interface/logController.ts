@@ -5,7 +5,7 @@ import { CreateLogRequest, CreateLogResponse, GetAllLogsResponse } from './logSc
 export class LogController {
   constructor(private readonly logUseCase: LogUseCase) {}
 
-  async createLog(req: Request, res: Response) {
+  createLog = async (req: Request, res: Response) => {
     const { serviceName, level, message } = req.body as CreateLogRequest;
 
     const log = await this.logUseCase.createLog(serviceName, level, message);
@@ -19,9 +19,9 @@ export class LogController {
     };
 
     res.status(200).json(createLogResponse);
-  }
+  };
 
-  async getAllLogs(_req: Request, res: Response) {
+  getAllLogs = async (_req: Request, res: Response) => {
     const logs = await this.logUseCase.getAllLogs();
 
     const getAllLogsResponse: GetAllLogsResponse = logs.map((log) => ({
@@ -33,5 +33,5 @@ export class LogController {
     }));
 
     res.status(200).json(getAllLogsResponse);
-  }
+  };
 }

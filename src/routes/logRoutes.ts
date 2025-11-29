@@ -8,7 +8,7 @@ import { LogRepositoryImpl } from '../infrastructure/logRepository';
 import { LogController } from '../interface/logController';
 import { CreateLogRequestSchema, GetAllLogsRequestSchema } from '../interface/logSchema';
 import { AuthMiddleware } from '../interface/middleware/auth';
-import { validate } from '../interface/middleware/validate';
+import { ValidateMiddleware } from '../interface/middleware/validate';
 
 const router = Router();
 
@@ -25,14 +25,21 @@ const authUseCase = new AuthUseCaseImpl(authClient);
 const logUseCase = new LogUseCaseImpl(logRepository);
 
 const authMiddleware = new AuthMiddleware(authUseCase);
+const validateMiddleware = new ValidateMiddleware();
 
 const logController = new LogController(logUseCase);
 
-router.post('/', authMiddleware.verifyToken, validate(CreateLogRequestSchema), (req, res) =>
-  logController.createLog(req, res),
+router.post(
+  '/',
+  authMiddleware.verifyToken,
+  validateMiddleware.handle(CreateLogRequestSchema),
+  logController.createLog,
 );
-router.get('/', authMiddleware.verifyToken, validate(GetAllLogsRequestSchema), (req, res) =>
-  logController.getAllLogs(req, res),
+router.get(
+  '/',
+  authMiddleware.verifyToken,
+  validateMiddleware.handle(GetAllLogsRequestSchema),
+  logController.getAllLogs,
 );
 
 export default router;
