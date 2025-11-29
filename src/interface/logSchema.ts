@@ -20,6 +20,7 @@ export const CreateLogResponseSchema = z
     level: z.string(),
     message: z.string(),
     timestamp: z.date(),
+    userId: z.string().optional(),
   })
   .openapi('CreateLogResponse');
 
@@ -37,6 +38,7 @@ export const GetAllLogsResponseSchema = z
       level: z.string(),
       message: z.string(),
       timestamp: z.date(),
+      userId: z.string().optional(),
     }),
   )
   .openapi('GetAllLogsResponse');

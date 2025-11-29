@@ -6,22 +6,29 @@ import { Log } from '../domain/log/log';
 import { Message as LogMessage } from '../domain/log/message';
 import { LogRepository } from '../domain/log/repository';
 import { Timestamp as LogTimestamp } from '../domain/log/timestamp';
+import { UserId as LogUserId } from '../domain/log/userId';
 
 export interface LogUseCase {
-  createLog(serviceName: string, level: string, message: string): Promise<Log>;
+  createLog(serviceName: string, level: string, message: string, userId?: string): Promise<Log>;
   getAllLogs(): Promise<Log[]>;
 }
 
 export class LogUseCaseImpl implements LogUseCase {
   constructor(private readonly logRepository: LogRepository) {}
 
-  async createLog(serviceName: string, level: string, message: string): Promise<Log> {
+  async createLog(
+    serviceName: string,
+    level: string,
+    message: string,
+    userId?: string,
+  ): Promise<Log> {
     const log = new Log(
       new LogId(v4()),
       new LogServiceName(serviceName),
       new LogLevel(level),
       new LogMessage(message),
       new LogTimestamp(new Date()),
+      userId ? new LogUserId(userId) : null,
     );
 
     if (log.level.value === LogLevel.ERROR) await this.logRepository.create(log);
@@ -32,6 +39,7 @@ export class LogUseCaseImpl implements LogUseCase {
       level: log.level.value,
       message: log.message.value,
       timestamp: log.timestamp.value,
+      userId: log.userId?.value,
     };
 
     switch (log.level.value) {

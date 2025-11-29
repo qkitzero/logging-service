@@ -7,8 +7,9 @@ export class LogController {
 
   createLog = async (req: Request, res: Response) => {
     const { serviceName, level, message } = req.body as CreateLogRequest;
+    const userId = req.userId;
 
-    const log = await this.logUseCase.createLog(serviceName, level, message);
+    const log = await this.logUseCase.createLog(serviceName, level, message, userId);
 
     const createLogResponse: CreateLogResponse = {
       id: log.id.value,
@@ -16,6 +17,7 @@ export class LogController {
       level: log.level.value,
       message: log.message.value,
       timestamp: log.timestamp.value,
+      userId: log.userId?.value,
     };
 
     res.status(200).json(createLogResponse);
@@ -30,6 +32,7 @@ export class LogController {
       level: log.level.value,
       message: log.message.value,
       timestamp: log.timestamp.value,
+      userId: log.userId?.value,
     }));
 
     res.status(200).json(getAllLogsResponse);

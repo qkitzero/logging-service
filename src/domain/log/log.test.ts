@@ -5,9 +5,28 @@ import { Log } from './log';
 import { Message } from './message';
 import { ServiceName } from './serviceName';
 import { Timestamp } from './timestamp';
+import { UserId } from './userId';
 
 describe('Log', () => {
   it('should create a Log instance with correct values', () => {
+    const id = new Id(v4());
+    const serviceName = new ServiceName('test-service');
+    const level = new Level(Level.INFO);
+    const message = new Message('Test log message');
+    const timestamp = new Timestamp(new Date());
+    const userId = new UserId('user-id');
+
+    const log = new Log(id, serviceName, level, message, timestamp, userId);
+
+    expect(log.id).toBe(id);
+    expect(log.serviceName).toBe(serviceName);
+    expect(log.level).toBe(level);
+    expect(log.message).toBe(message);
+    expect(log.timestamp).toBe(timestamp);
+    expect(log.userId).toBe(userId);
+  });
+
+  it('should create a Log instance with correct values without userId', () => {
     const id = new Id(v4());
     const serviceName = new ServiceName('test-service');
     const level = new Level(Level.INFO);
@@ -21,5 +40,6 @@ describe('Log', () => {
     expect(log.level).toBe(level);
     expect(log.message).toBe(message);
     expect(log.timestamp).toBe(timestamp);
+    expect(log.userId).toBeNull();
   });
 });
