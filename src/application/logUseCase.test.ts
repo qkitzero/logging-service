@@ -6,6 +6,7 @@ describe('LogUseCase', () => {
     const mockLogRepository: jest.Mocked<LogRepository> = {
       create: jest.fn(),
       findAll: jest.fn(),
+      findById: jest.fn(),
     };
     const logUseCase = new LogUseCaseImpl(mockLogRepository);
     return { mockLogRepository, logUseCase };
@@ -13,21 +14,21 @@ describe('LogUseCase', () => {
 
   describe('createLog', () => {
     const levels = [
-      { serviceName: 'test-service', level: 'ERROR', message: 'Test message' },
-      { serviceName: 'test-service', level: 'WARN', message: 'Test message' },
-      { serviceName: 'test-service', level: 'INFO', message: 'Test message' },
-      { serviceName: 'test-service', level: 'DEBUG', message: 'Test message' },
+      { serviceName: 'test-service', level: 'ERROR', message: 'Test message', userId: 'user-id' },
+      { serviceName: 'test-service', level: 'WARN', message: 'Test message', userId: undefined },
+      { serviceName: 'test-service', level: 'INFO', message: 'Test message', userId: 'user-id' },
+      { serviceName: 'test-service', level: 'DEBUG', message: 'Test message', userId: undefined },
     ];
     it.each(levels)(
-      'should handle logging and persistence properly when level is %s',
-      async ({ serviceName, level, message }) => {
+      'should handle logging and persistence properly when level is %s and userId is %s',
+      async ({ serviceName, level, message, userId }) => {
         const { mockLogRepository, logUseCase } = setup();
 
         const spyConsoleError = jest.spyOn(console, 'error').mockImplementation(() => {});
         const spyConsoleWarn = jest.spyOn(console, 'warn').mockImplementation(() => {});
         const spyConsoleLog = jest.spyOn(console, 'log').mockImplementation(() => {});
 
-        const log = await logUseCase.createLog(serviceName, level, message);
+        const log = await logUseCase.createLog(serviceName, level, message, userId);
 
         switch (level) {
           case 'ERROR':
@@ -59,6 +60,7 @@ describe('LogUseCase', () => {
         expect(log.serviceName.value).toBe(serviceName);
         expect(log.level.value).toBe(level);
         expect(log.message.value).toBe(message);
+        expect(log.userId?.value ?? null).toBe(userId ?? null);
 
         spyConsoleError.mockRestore();
         spyConsoleWarn.mockRestore();

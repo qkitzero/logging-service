@@ -8,8 +8,7 @@ const port = process.env.PORT || 8000;
 app.use(express.json());
 app.use('/logs', logRoutes);
 
-const errorMiddleware = new ErrorMiddleware();
-app.use(errorMiddleware.handle);
+app.use(ErrorMiddleware.handle);
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);

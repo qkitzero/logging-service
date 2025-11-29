@@ -5,6 +5,7 @@ import {
   Message as LogMessage,
   ServiceName as LogServiceName,
   Timestamp as LogTimestamp,
+  UserId as LogUserId,
 } from '../domain/log';
 import { Log } from '../domain/log/log';
 import { LogRepository } from '../domain/log/repository';
@@ -20,6 +21,7 @@ export class LogRepositoryImpl implements LogRepository {
         level: log.level.value,
         message: log.message.value,
         timestamp: log.timestamp.value,
+        userId: log.userId?.value,
       },
     });
   }
@@ -31,12 +33,14 @@ export class LogRepositoryImpl implements LogRepository {
     if (!log) {
       return null;
     }
+
     return new Log(
       new LogId(log.id),
       new LogServiceName(log.serviceName),
       new LogLevel(log.level),
       new LogMessage(log.message),
       new LogTimestamp(log.timestamp),
+      log.userId ? new LogUserId(log.userId) : null,
     );
   }
 
@@ -50,6 +54,7 @@ export class LogRepositoryImpl implements LogRepository {
           new LogLevel(log.level),
           new LogMessage(log.message),
           new LogTimestamp(log.timestamp),
+          log.userId ? new LogUserId(log.userId) : null,
         ),
     );
   }
