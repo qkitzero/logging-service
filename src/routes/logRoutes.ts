@@ -6,7 +6,7 @@ import { paths } from '../infrastructure/api/auth.schema';
 import { AuthUseCaseImpl } from '../infrastructure/api/authUseCase';
 import { LogRepositoryImpl } from '../infrastructure/logRepository';
 import { LogController } from '../interface/logController';
-import { CreateLogRequestSchema, GetAllLogsRequestSchema } from '../interface/logSchema';
+import { CreateLogRequestSchema } from '../interface/logSchema';
 import { AuthMiddleware } from '../interface/middleware/auth';
 import { ValidateMiddleware } from '../interface/middleware/validate';
 
@@ -35,11 +35,6 @@ router.post(
   validateMiddleware.handle(CreateLogRequestSchema),
   logController.createLog,
 );
-router.get(
-  '/',
-  authMiddleware.verifyToken,
-  validateMiddleware.handle(GetAllLogsRequestSchema),
-  logController.getAllLogs,
-);
+router.get('/', authMiddleware.verifyToken, logController.getAllLogs);
 
 export default router;
