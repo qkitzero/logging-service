@@ -26,10 +26,6 @@ export const CreateLogResponseSchema = z
 
 export type CreateLogResponse = z.infer<typeof CreateLogResponseSchema>;
 
-export const GetAllLogsRequestSchema = z.object({}).openapi('GetAllLogsRequest');
-
-export type GetAllLogsRequest = z.infer<typeof GetAllLogsRequestSchema>;
-
 export const GetAllLogsResponseSchema = z
   .array(
     z.object({
