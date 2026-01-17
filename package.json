@@ -1,6 +1,17 @@
 {
-  "name": "logging-service",
+  "name": "@qkitzero/logging-service-openapi",
   "version": "0.0.0",
+  "files": [
+    "gen/",
+    "README.npm.md"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/qkitzero/logging-service.git"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "main": "dist/server.js",
   "scripts": {
     "format": "prettier --write \"src/**/*.ts\"",

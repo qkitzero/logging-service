@@ -32,7 +32,7 @@ function writeDocumentation() {
 
   const fileContent = JSON.stringify(docs);
 
-  fs.writeFileSync(`${__dirname}/openapi.json`, fileContent, {
+  fs.writeFileSync(`gen/openapi.json`, fileContent, {
     encoding: 'utf-8',
   });
 }
