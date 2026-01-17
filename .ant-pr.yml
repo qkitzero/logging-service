@@ -5,6 +5,6 @@ limits:
     'src/': 200
 ignore:
   - 'package-lock.json'
-  - 'gen'
+  - 'gen/*'
   - 'src/infrastructure/api/*.openapi.json'
   - 'src/infrastructure/api/*.schema.ts'
