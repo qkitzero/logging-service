@@ -12,7 +12,6 @@
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
   },
-  "main": "dist/server.js",
   "scripts": {
     "format": "prettier --write \"src/**/*.ts\"",
     "lint": "eslint \"src/**/*.ts\"",
