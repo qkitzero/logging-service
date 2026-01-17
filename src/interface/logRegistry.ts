@@ -2,7 +2,6 @@ import { OpenAPIRegistry } from '@asteasolutions/zod-to-openapi';
 import {
   CreateLogRequestSchema,
   CreateLogResponseSchema,
-  GetAllLogsRequestSchema,
   GetAllLogsResponseSchema,
 } from './logSchema';
 
@@ -46,15 +45,6 @@ export const registerLog = (registry: OpenAPIRegistry) => {
     description: '',
     summary: '',
     security: [{ [bearerAuth.name]: [] }],
-    request: {
-      body: {
-        content: {
-          'application/json': {
-            schema: GetAllLogsRequestSchema,
-          },
-        },
-      },
-    },
     responses: {
       200: {
         description: '',
