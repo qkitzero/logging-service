@@ -31,7 +31,7 @@ export class LogUseCaseImpl implements LogUseCase {
       userId ? new LogUserId(userId) : null,
     );
 
-    if (log.level.value === LogLevel.ERROR) await this.logRepository.create(log);
+    if (log.level.value !== LogLevel.DEBUG) await this.logRepository.create(log);
 
     const output = {
       id: log.id.value,
