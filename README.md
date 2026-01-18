@@ -17,6 +17,20 @@
 - Cloud Run
 
 ```mermaid
+classDiagram
+    direction LR
+
+    class Log {
+        id
+        serviceName
+        level
+        message
+        timestamp
+        userId
+    }
+```
+
+```mermaid
 flowchart TD
     subgraph gcp[GCP]
         secret_manager[Secret Manager]
