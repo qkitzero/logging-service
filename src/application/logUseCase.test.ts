@@ -38,13 +38,13 @@ describe('LogUseCase', () => {
             expect(spyConsoleLog).not.toHaveBeenCalled();
             break;
           case 'WARN':
-            expect(mockLogRepository.create).not.toHaveBeenCalled();
+            expect(mockLogRepository.create).toHaveBeenCalled();
             expect(spyConsoleWarn).toHaveBeenCalled();
             expect(spyConsoleError).not.toHaveBeenCalled();
             expect(spyConsoleLog).not.toHaveBeenCalled();
             break;
           case 'INFO':
-            expect(mockLogRepository.create).not.toHaveBeenCalled();
+            expect(mockLogRepository.create).toHaveBeenCalled();
             expect(spyConsoleLog).toHaveBeenCalled();
             expect(spyConsoleError).not.toHaveBeenCalled();
             expect(spyConsoleWarn).not.toHaveBeenCalled();
