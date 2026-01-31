@@ -43,6 +43,7 @@ export type GetAllLogsResponse = z.infer<typeof GetAllLogsResponseSchema>;
 
 export const ErrorResponseSchema = z
   .object({
+    error: z.string(),
     message: z.string(),
   })
   .openapi('ErrorResponse');
