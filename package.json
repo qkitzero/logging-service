@@ -37,7 +37,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.36.0",
-    "@qkitzero/auth-service-openapi": "^1.4.9",
+    "@qkitzero/auth-service-openapi": "^1.4.12",
     "@tsconfig/node24": "^24.0.3",
     "@types/express": "^5.0.3",
     "@types/jest": "^30.0.0",
