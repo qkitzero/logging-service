@@ -28,6 +28,6 @@ jobs:
 
       - run: npm ci
 
-      - run: make prisma-generate
+      - run: npm run prisma:generate
 
       - run: npm run lint
