@@ -13,6 +13,33 @@ export const registerLog = (registry: OpenAPIRegistry) => {
     bearerFormat: 'JWT',
   });
 
+  const errorResponses = {
+    400: {
+      description: 'Bad Request',
+      content: {
+        'application/json': {
+          schema: ErrorResponseSchema,
+        },
+      },
+    },
+    401: {
+      description: 'Unauthorized',
+      content: {
+        'application/json': {
+          schema: ErrorResponseSchema,
+        },
+      },
+    },
+    500: {
+      description: 'Internal Server Error',
+      content: {
+        'application/json': {
+          schema: ErrorResponseSchema,
+        },
+      },
+    },
+  };
+
   registry.registerPath({
     method: 'post',
     path: '/logs',
@@ -37,30 +64,7 @@ export const registerLog = (registry: OpenAPIRegistry) => {
           },
         },
       },
-      400: {
-        description: 'Bad Request',
-        content: {
-          'application/json': {
-            schema: ErrorResponseSchema,
-          },
-        },
-      },
-      401: {
-        description: 'Unauthorized',
-        content: {
-          'application/json': {
-            schema: ErrorResponseSchema,
-          },
-        },
-      },
-      500: {
-        description: 'Internal Server Error',
-        content: {
-          'application/json': {
-            schema: ErrorResponseSchema,
-          },
-        },
-      },
+      ...errorResponses,
     },
   });
 
@@ -79,30 +83,7 @@ export const registerLog = (registry: OpenAPIRegistry) => {
           },
         },
       },
-      400: {
-        description: 'Bad Request',
-        content: {
-          'application/json': {
-            schema: ErrorResponseSchema,
-          },
-        },
-      },
-      401: {
-        description: 'Unauthorized',
-        content: {
-          'application/json': {
-            schema: ErrorResponseSchema,
-          },
-        },
-      },
-      500: {
-        description: 'Internal Server Error',
-        content: {
-          'application/json': {
-            schema: ErrorResponseSchema,
-          },
-        },
-      },
+      ...errorResponses,
     },
   });
 };
