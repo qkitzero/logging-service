@@ -2,6 +2,7 @@ import { OpenAPIRegistry } from '@asteasolutions/zod-to-openapi';
 import {
   CreateLogRequestSchema,
   CreateLogResponseSchema,
+  ErrorResponseSchema,
   GetAllLogsResponseSchema,
 } from './logSchema';
 
@@ -36,6 +37,30 @@ export const registerLog = (registry: OpenAPIRegistry) => {
           },
         },
       },
+      400: {
+        description: 'Bad Request',
+        content: {
+          'application/json': {
+            schema: ErrorResponseSchema,
+          },
+        },
+      },
+      401: {
+        description: 'Unauthorized',
+        content: {
+          'application/json': {
+            schema: ErrorResponseSchema,
+          },
+        },
+      },
+      500: {
+        description: 'Internal Server Error',
+        content: {
+          'application/json': {
+            schema: ErrorResponseSchema,
+          },
+        },
+      },
     },
   });
 
@@ -51,6 +76,30 @@ export const registerLog = (registry: OpenAPIRegistry) => {
         content: {
           'application/json': {
             schema: GetAllLogsResponseSchema,
+          },
+        },
+      },
+      400: {
+        description: 'Bad Request',
+        content: {
+          'application/json': {
+            schema: ErrorResponseSchema,
+          },
+        },
+      },
+      401: {
+        description: 'Unauthorized',
+        content: {
+          'application/json': {
+            schema: ErrorResponseSchema,
+          },
+        },
+      },
+      500: {
+        description: 'Internal Server Error',
+        content: {
+          'application/json': {
+            schema: ErrorResponseSchema,
           },
         },
       },
