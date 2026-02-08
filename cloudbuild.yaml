@@ -42,7 +42,8 @@ steps:
           --cpu=1 \
           --concurrency=80 \
           --timeout=30 \
-          --no-allow-unauthenticated \
+          --ingress=all \
+          --allow-unauthenticated \
           --set-env-vars=$$(cat .env | xargs | sed 's/ /,/g')
 
 images:
