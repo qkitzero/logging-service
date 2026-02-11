@@ -42,7 +42,7 @@ export const registerLog = (registry: OpenAPIRegistry) => {
 
   registry.registerPath({
     method: 'post',
-    path: '/logs',
+    path: '/v1/logs',
     description: '',
     summary: '',
     security: [{ [bearerAuth.name]: [] }],
@@ -70,7 +70,7 @@ export const registerLog = (registry: OpenAPIRegistry) => {
 
   registry.registerPath({
     method: 'get',
-    path: '/logs',
+    path: '/v1/logs',
     description: '',
     summary: '',
     security: [{ [bearerAuth.name]: [] }],
