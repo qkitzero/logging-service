@@ -1,6 +1,6 @@
 import createClient from 'openapi-fetch';
-import { AuthUseCase } from '../../application/authUseCase';
-import { paths } from './auth.schema';
+import { AuthService } from '../../../application/authService';
+import { paths } from './schema';
 
 export class AuthError extends Error {
   constructor(message: string) {
@@ -9,7 +9,7 @@ export class AuthError extends Error {
   }
 }
 
-export class AuthUseCaseImpl implements AuthUseCase {
+export class AuthServiceImpl implements AuthService {
   constructor(private readonly client: ReturnType<typeof createClient<paths>>) {}
 
   async verifyToken(token: string): Promise<string> {

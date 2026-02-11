@@ -130,6 +130,46 @@
                 ]
             }
         },
+        "/v1/m2m-token": {
+            "post": {
+                "operationId": "AuthService_GetM2MToken",
+                "responses": {
+                    "200": {
+                        "description": "A successful response.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/v1GetM2MTokenResponse"
+                                }
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "An unexpected error response.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/rpcStatus"
+                                }
+                            }
+                        }
+                    }
+                },
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/v1GetM2MTokenRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "tags": [
+                    "AuthService"
+                ]
+            }
+        },
         "/v1/refresh": {
             "post": {
                 "operationId": "AuthService_RefreshToken",
@@ -297,6 +337,25 @@
                     "userId": {
                         "type": "string"
                     },
+                    "accessToken": {
+                        "type": "string"
+                    }
+                }
+            },
+            "v1GetM2MTokenRequest": {
+                "type": "object",
+                "properties": {
+                    "clientId": {
+                        "type": "string"
+                    },
+                    "clientSecret": {
+                        "type": "string"
+                    }
+                }
+            },
+            "v1GetM2MTokenResponse": {
+                "type": "object",
+                "properties": {
                     "accessToken": {
                         "type": "string"
                     }

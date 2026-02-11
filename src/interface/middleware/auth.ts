@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { AuthUseCase } from '../../application/authUseCase';
-import { AuthError } from '../../infrastructure/api/authUseCase';
+import { AuthService } from '../../application/authService';
 
 declare module 'express' {
   interface Request {
@@ -9,13 +8,13 @@ declare module 'express' {
 }
 
 export class AuthMiddleware {
-  constructor(private readonly authUseCase: AuthUseCase) {}
+  constructor(private readonly authService: AuthService) {}
 
   verifyToken = async (req: Request, res: Response, next: NextFunction) => {
     const header = req.headers.authorization;
     if (!header) {
       return res.status(401).json({
-        error: AuthError.name,
+        error: 'AuthError',
         message: 'Token is missing',
       });
     }
@@ -23,26 +22,19 @@ export class AuthMiddleware {
     const [scheme, token] = header.split(' ');
     if (scheme.toLowerCase() !== 'bearer' || !token) {
       return res.status(401).json({
-        error: AuthError.name,
+        error: 'AuthError',
         message: 'Invalid Authorization format',
       });
     }
 
     try {
-      const userId = await this.authUseCase.verifyToken(token);
+      const userId = await this.authService.verifyToken(token);
       req.userId = userId;
       next();
     } catch (error) {
-      if (error instanceof AuthError) {
-        return res.status(401).json({
-          error: error.name,
-          message: error.message,
-        });
-      }
-
-      return res.status(500).json({
-        error: 'InternalServerError',
-        message: 'Unexpected server error',
+      return res.status(401).json({
+        error: 'AuthError',
+        message: error instanceof Error ? error.message : 'Failed to verify token',
       });
     }
   };

@@ -52,6 +52,22 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/m2m-token": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["AuthService_GetM2MToken"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/refresh": {
         parameters: {
             query?: never;
@@ -121,6 +137,13 @@ export interface components {
         };
         v1ExchangeCodeResponse: {
             userId?: string;
+            accessToken?: string;
+        };
+        v1GetM2MTokenRequest: {
+            clientId?: string;
+            clientSecret?: string;
+        };
+        v1GetM2MTokenResponse: {
             accessToken?: string;
         };
         v1LoginRequest: {
@@ -240,6 +263,39 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["v1LogoutResponse"];
+                };
+            };
+            /** @description An unexpected error response. */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["rpcStatus"];
+                };
+            };
+        };
+    };
+    AuthService_GetM2MToken: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["v1GetM2MTokenRequest"];
+            };
+        };
+        responses: {
+            /** @description A successful response. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["v1GetM2MTokenResponse"];
                 };
             };
             /** @description An unexpected error response. */
