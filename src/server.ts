@@ -6,7 +6,7 @@ const app = express();
 const port = process.env.PORT || 8000;
 
 app.use(express.json());
-app.use('/logs', logRoutes);
+app.use('/v1/logs', logRoutes);
 
 app.use(ErrorMiddleware.handle);
 
