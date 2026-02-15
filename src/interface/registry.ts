@@ -23,7 +23,7 @@ function getOpenApiDocumentation() {
       title: 'Logging Service',
       description: 'Microservices for logging',
     },
-    servers: [{ url: 'v1' }],
+    servers: [{ url: '/' }],
   });
 }
 
