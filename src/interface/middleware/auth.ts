@@ -27,15 +27,8 @@ export class AuthMiddleware {
       });
     }
 
-    try {
-      const userId = await this.authService.verifyToken(token);
-      req.userId = userId;
-      next();
-    } catch (error) {
-      return res.status(401).json({
-        error: 'AuthError',
-        message: error instanceof Error ? error.message : 'Failed to verify token',
-      });
-    }
+    const userId = await this.authService.verifyToken(token);
+    req.userId = userId;
+    next();
   };
 }
