@@ -4,6 +4,7 @@ import createClient from 'openapi-fetch';
 import { LogUseCaseImpl } from './application/logUseCase';
 import { AuthServiceImpl } from './infrastructure/api/auth/authService';
 import { paths as authPaths } from './infrastructure/api/auth/schema';
+import { ConsoleLogger } from './infrastructure/consoleLogger';
 import { LogRepositoryImpl } from './infrastructure/logRepository';
 import { LogController } from './interface/logController';
 import { createLogRoutes } from './interface/logRoutes';
@@ -21,7 +22,8 @@ const prisma = new PrismaClient();
 const logRepository = new LogRepositoryImpl(prisma);
 
 const authService = new AuthServiceImpl(authClient);
-const logUseCase = new LogUseCaseImpl(logRepository);
+const logger = new ConsoleLogger();
+const logUseCase = new LogUseCaseImpl(logRepository, logger);
 
 const authMiddleware = new AuthMiddleware(authService);
 const validateMiddleware = new ValidateMiddleware();

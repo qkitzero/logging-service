@@ -53,10 +53,10 @@ describe('LogController', () => {
       await logController.createLog(req, res);
 
       expect(mockLogUseCase.createLog).toHaveBeenCalledWith(
-        'test-service',
-        'INFO',
-        'Test message',
-        'user-id',
+        new LogServiceName('test-service'),
+        new LogLevel('INFO'),
+        new LogMessage('Test message'),
+        new LogUserId('user-id'),
       );
       expect(res.status).toHaveBeenCalledWith(200);
       expect(res.json).toHaveBeenCalledWith({
@@ -98,9 +98,9 @@ describe('LogController', () => {
       await logController.createLog(req, res);
 
       expect(mockLogUseCase.createLog).toHaveBeenCalledWith(
-        'test-service',
-        'INFO',
-        'Test message',
+        new LogServiceName('test-service'),
+        new LogLevel('INFO'),
+        new LogMessage('Test message'),
         undefined,
       );
       expect(res.status).toHaveBeenCalledWith(200);
