@@ -42,4 +42,26 @@ describe('Log', () => {
     expect(log.timestamp).toBe(timestamp);
     expect(log.userId).toBeNull();
   });
+
+  describe('shouldSave', () => {
+    const buildLog = (level: string) =>
+      new Log(
+        new Id(v4()),
+        new ServiceName('test-service'),
+        new Level(level),
+        new Message('Test log message'),
+        new Timestamp(new Date()),
+      );
+
+    it.each([Level.INFO, Level.WARN, Level.ERROR])(
+      'should return true when level is %s',
+      (level) => {
+        expect(buildLog(level).shouldSave()).toBe(true);
+      },
+    );
+
+    it('should return false when level is DEBUG', () => {
+      expect(buildLog(Level.DEBUG).shouldSave()).toBe(false);
+    });
+  });
 });
