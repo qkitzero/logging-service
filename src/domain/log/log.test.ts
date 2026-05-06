@@ -53,15 +53,13 @@ describe('Log', () => {
         new Timestamp(new Date()),
       );
 
-    it.each([Level.INFO, Level.WARN, Level.ERROR])(
-      'should return true when level is %s',
-      (level) => {
-        expect(buildLog(level).shouldSave()).toBe(true);
-      },
-    );
-
-    it('should return false when level is DEBUG', () => {
-      expect(buildLog(Level.DEBUG).shouldSave()).toBe(false);
+    it.each(
+      Level.ALL.map((level) => ({
+        level,
+        expected: level !== Level.DEBUG,
+      })),
+    )('should return $expected when level is $level', ({ level, expected }) => {
+      expect(buildLog(level).shouldSave()).toBe(expected);
     });
   });
 });
