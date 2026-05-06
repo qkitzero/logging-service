@@ -1,4 +1,9 @@
+import { Level } from '../domain/log/level';
+import { Message } from '../domain/log/message';
 import { LogRepository } from '../domain/log/repository';
+import { ServiceName } from '../domain/log/serviceName';
+import { UserId } from '../domain/log/userId';
+import { Logger } from './logger';
 import { LogUseCaseImpl } from './logUseCase';
 
 describe('LogUseCase', () => {
@@ -8,52 +13,63 @@ describe('LogUseCase', () => {
       findAll: jest.fn(),
       findById: jest.fn(),
     };
-    const logUseCase = new LogUseCaseImpl(mockLogRepository);
-    return { mockLogRepository, logUseCase };
+    const mockLogger: jest.Mocked<Logger> = {
+      info: jest.fn(),
+      warn: jest.fn(),
+      error: jest.fn(),
+      debug: jest.fn(),
+    };
+    const logUseCase = new LogUseCaseImpl(mockLogRepository, mockLogger);
+    return { mockLogRepository, mockLogger, logUseCase };
   };
 
   describe('createLog', () => {
-    const levels = [
+    const cases = [
       { serviceName: 'test-service', level: 'ERROR', message: 'Test message', userId: 'user-id' },
       { serviceName: 'test-service', level: 'WARN', message: 'Test message', userId: undefined },
       { serviceName: 'test-service', level: 'INFO', message: 'Test message', userId: 'user-id' },
       { serviceName: 'test-service', level: 'DEBUG', message: 'Test message', userId: undefined },
     ];
-    it.each(levels)(
+    it.each(cases)(
       'should handle logging and persistence properly when level is %s and userId is %s',
       async ({ serviceName, level, message, userId }) => {
-        const { mockLogRepository, logUseCase } = setup();
+        const { mockLogRepository, mockLogger, logUseCase } = setup();
 
-        const spyConsoleError = jest.spyOn(console, 'error').mockImplementation(() => {});
-        const spyConsoleWarn = jest.spyOn(console, 'warn').mockImplementation(() => {});
-        const spyConsoleLog = jest.spyOn(console, 'log').mockImplementation(() => {});
-
-        const log = await logUseCase.createLog(serviceName, level, message, userId);
+        const log = await logUseCase.createLog(
+          new ServiceName(serviceName),
+          new Level(level),
+          new Message(message),
+          userId ? new UserId(userId) : undefined,
+        );
 
         switch (level) {
           case 'ERROR':
             expect(mockLogRepository.create).toHaveBeenCalled();
-            expect(spyConsoleError).toHaveBeenCalled();
-            expect(spyConsoleWarn).not.toHaveBeenCalled();
-            expect(spyConsoleLog).not.toHaveBeenCalled();
+            expect(mockLogger.error).toHaveBeenCalled();
+            expect(mockLogger.warn).not.toHaveBeenCalled();
+            expect(mockLogger.info).not.toHaveBeenCalled();
+            expect(mockLogger.debug).not.toHaveBeenCalled();
             break;
           case 'WARN':
             expect(mockLogRepository.create).toHaveBeenCalled();
-            expect(spyConsoleWarn).toHaveBeenCalled();
-            expect(spyConsoleError).not.toHaveBeenCalled();
-            expect(spyConsoleLog).not.toHaveBeenCalled();
+            expect(mockLogger.warn).toHaveBeenCalled();
+            expect(mockLogger.error).not.toHaveBeenCalled();
+            expect(mockLogger.info).not.toHaveBeenCalled();
+            expect(mockLogger.debug).not.toHaveBeenCalled();
             break;
           case 'INFO':
             expect(mockLogRepository.create).toHaveBeenCalled();
-            expect(spyConsoleLog).toHaveBeenCalled();
-            expect(spyConsoleError).not.toHaveBeenCalled();
-            expect(spyConsoleWarn).not.toHaveBeenCalled();
+            expect(mockLogger.info).toHaveBeenCalled();
+            expect(mockLogger.error).not.toHaveBeenCalled();
+            expect(mockLogger.warn).not.toHaveBeenCalled();
+            expect(mockLogger.debug).not.toHaveBeenCalled();
             break;
           case 'DEBUG':
             expect(mockLogRepository.create).not.toHaveBeenCalled();
-            expect(spyConsoleLog).toHaveBeenCalled();
-            expect(spyConsoleError).not.toHaveBeenCalled();
-            expect(spyConsoleWarn).not.toHaveBeenCalled();
+            expect(mockLogger.debug).toHaveBeenCalled();
+            expect(mockLogger.error).not.toHaveBeenCalled();
+            expect(mockLogger.warn).not.toHaveBeenCalled();
+            expect(mockLogger.info).not.toHaveBeenCalled();
             break;
         }
 
@@ -61,10 +77,6 @@ describe('LogUseCase', () => {
         expect(log.level.value).toBe(level);
         expect(log.message.value).toBe(message);
         expect(log.userId?.value ?? null).toBe(userId ?? null);
-
-        spyConsoleError.mockRestore();
-        spyConsoleWarn.mockRestore();
-        spyConsoleLog.mockRestore();
       },
     );
   });

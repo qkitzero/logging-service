@@ -1,34 +1,42 @@
-import { v4 } from 'uuid';
-import { ServiceName as LogServiceName } from '../domain/log';
 import { Id as LogId } from '../domain/log/id';
 import { Level as LogLevel } from '../domain/log/level';
 import { Log } from '../domain/log/log';
 import { Message as LogMessage } from '../domain/log/message';
 import { LogRepository } from '../domain/log/repository';
+import { ServiceName as LogServiceName } from '../domain/log/serviceName';
 import { Timestamp as LogTimestamp } from '../domain/log/timestamp';
 import { UserId as LogUserId } from '../domain/log/userId';
+import { Logger } from './logger';
 
 export interface LogUseCase {
-  createLog(serviceName: string, level: string, message: string, userId?: string): Promise<Log>;
+  createLog(
+    serviceName: LogServiceName,
+    level: LogLevel,
+    message: LogMessage,
+    userId?: LogUserId,
+  ): Promise<Log>;
   getAllLogs(): Promise<Log[]>;
 }
 
 export class LogUseCaseImpl implements LogUseCase {
-  constructor(private readonly logRepository: LogRepository) {}
+  constructor(
+    private readonly logRepository: LogRepository,
+    private readonly logger: Logger,
+  ) {}
 
   async createLog(
-    serviceName: string,
-    level: string,
-    message: string,
-    userId?: string,
+    serviceName: LogServiceName,
+    level: LogLevel,
+    message: LogMessage,
+    userId?: LogUserId,
   ): Promise<Log> {
     const log = new Log(
-      new LogId(v4()),
-      new LogServiceName(serviceName),
-      new LogLevel(level),
-      new LogMessage(message),
-      new LogTimestamp(new Date()),
-      userId ? new LogUserId(userId) : null,
+      LogId.generate(),
+      serviceName,
+      level,
+      message,
+      LogTimestamp.now(),
+      userId ?? null,
     );
 
     if (log.shouldSave()) await this.logRepository.create(log);
@@ -44,13 +52,16 @@ export class LogUseCaseImpl implements LogUseCase {
 
     switch (log.level.value) {
       case LogLevel.ERROR:
-        console.error(JSON.stringify(output));
+        this.logger.error(output);
         break;
       case LogLevel.WARN:
-        console.warn(JSON.stringify(output));
+        this.logger.warn(output);
+        break;
+      case LogLevel.DEBUG:
+        this.logger.debug(output);
         break;
       default:
-        console.log(JSON.stringify(output));
+        this.logger.info(output);
         break;
     }
 
