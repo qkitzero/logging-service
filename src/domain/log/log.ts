@@ -14,4 +14,8 @@ export class Log {
     readonly timestamp: Timestamp,
     readonly userId: UserId | null = null,
   ) {}
+
+  shouldSave(): boolean {
+    return this.level.value !== Level.DEBUG;
+  }
 }

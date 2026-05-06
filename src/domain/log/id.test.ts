@@ -1,4 +1,4 @@
-import { v4 } from 'uuid';
+import { v4, validate } from 'uuid';
 import { Id, InvalidIdError } from './id';
 
 describe('Id', () => {
@@ -11,5 +11,16 @@ describe('Id', () => {
   it('should throw an error for an invalid UUID', () => {
     const invalidUuid = 'not-a-uuid';
     expect(() => new Id(invalidUuid)).toThrow(InvalidIdError);
+  });
+
+  describe('generate', () => {
+    it('should produce an Id with a valid UUID', () => {
+      const id = Id.generate();
+      expect(validate(id.value)).toBe(true);
+    });
+
+    it('should produce a different Id on each call', () => {
+      expect(Id.generate().value).not.toBe(Id.generate().value);
+    });
   });
 });

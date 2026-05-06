@@ -42,4 +42,24 @@ describe('Log', () => {
     expect(log.timestamp).toBe(timestamp);
     expect(log.userId).toBeNull();
   });
+
+  describe('shouldSave', () => {
+    const buildLog = (level: string) =>
+      new Log(
+        new Id(v4()),
+        new ServiceName('test-service'),
+        new Level(level),
+        new Message('Test log message'),
+        new Timestamp(new Date()),
+      );
+
+    it.each(
+      Level.ALL.map((level) => ({
+        level,
+        expected: level !== Level.DEBUG,
+      })),
+    )('should return $expected when level is $level', ({ level, expected }) => {
+      expect(buildLog(level).shouldSave()).toBe(expected);
+    });
+  });
 });
